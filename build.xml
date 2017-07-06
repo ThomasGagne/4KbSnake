@@ -1,0 +1,54 @@
+<project name="MY-PROJECT" default="dist" basedir=".">
+
+  <description>
+    A build file for MY PROJECT
+  </description>
+
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+
+  <path id="compile.class.path"/>
+
+  <path id="run.class.path">
+    <path refid="compile.class.path"/>
+    <pathelement location="${build}"/>
+  </path>
+
+  <target name="init">
+    <!-- Timestamp -->
+    <tstamp/>
+
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+  </target>
+
+  <target name="compile" depends="init" description="Compile source">
+    <javac srcdir="${src}" destdir="${build}" debug="off">
+      <classpath refid="compile.class.path"/>
+    </javac>
+
+    <copy todir="${build}/META-INF">
+      <fileset dir="${src}" includes="MANIFEST.MF"/>
+    </copy>
+  </target>
+
+  <target name="dist" depends="compile" description="Create distribution">
+    <exec dir="${build}" executable="zip">
+      <!-- Add any extra files needed for packaging to the line -->
+      <arg line="-X -D -9 ${dist}/MY-PROJECT.jar T.class META-INF/MANIFEST.MF"/>
+    </exec>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+
+  <target name="run" depends="compile">
+    <java classname="T" fork="yes">
+      <classpath refid="run.class.path"/>
+    </java>
+  </target>
+
+</project>
