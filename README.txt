@@ -3,7 +3,7 @@ An implementation of the classic snake video game in Java, where the compiled ja
 This project has a dependency on ant to build.
 
 To build, simply run
-``ant``
+```ant```
 then run
-``ant run``
+```ant run```
 to run the compiled jar.
